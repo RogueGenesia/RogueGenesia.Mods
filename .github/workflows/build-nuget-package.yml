@@ -1,0 +1,28 @@
+name: Nightly Builds
+on:
+  schedule:
+    - cron: '0 */4 * * *' # run every 4 hours, on the hour.
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+        environment:
+          app_id: 2067920
+          extra_steamcmd_args: 
+    steps:
+      - name: Check out repository  
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Download BepInEx 6.0-win-x64-660
+        run: curl "https://builds.bepinex.dev/projects/bepinex_be/660/BepInEx-Unity.IL2CPP-win-x64-6.0.0-be.660%2B40bf261.zip" --output bepinex.zip -UseBasicParsing
+        workdir: work
+      - name: Setup steamcmd
+        uses: CyberAndrii/setup-steamcmd@v1
+      - name: "Download Rogue: Genesia"
+        run: steamcmd +force_install_dir ./game +login "${{secrets.STEAMCMD_USER_NAME}}" "${{secrets.STEAMCMD_USER_PASSWORD}}" +app_update 2067920 validate -beta beta +quit
+        workdir: work
+      - name: "Generate interop assemblies"
+        run: ./generate_game_assemblies.sh
