@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IncludeBuiltProjectOutputGroup>false</IncludeBuiltProjectOutputGroup>
+    <PackageProjectUrl>https://github.com/RogueGenesia/RogueGenesia.Mods</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/RogueGenesia/RogueGenesia.Mods.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryCommit>$(GITHUB_SHA)</RepositoryCommit>
+    <RepositoryBranch Condition="'$(GITHUB_REF_TYPE)' == 'branch'" >$(GITHUB_REF)</RepositoryBranch>
+    <Authors>Jason Couture,Stefan Haacker</Authors>
+    <Description>
+      This NuGet package contains all of the files needed to build a mod for the game Rogue: Genesia
+      
+      About Rogue: Genesia
+      Walk upon a new world and slay foes endangering it. Rogue: Genesia is an action rogue-lite game, where you fight relentless hordes consisting of hundreds and thousands of monsters, carve your path through their ranks, defeat the boss and save one of the many worlds.
+      Steam page: https://store.steampowered.com/app/2067920/Rogue__Genesia/
+    </Description>
+    <VersionPrefix>1.0</VersionPrefix>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(CI)' == 'true'">
+    <Version Condition="'$(VersionSuffix)' != ''" >$(VersionPrefix).$(GITHUB_RUN_NUMBER)-$(VersionSuffix)</Version>
+    <Version Condition="'$(VersionSuffix)' == ''" >$(VersionPrefix).$(GITHUB_RUN_NUMBER)</Version>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <_PackageFiles Include="$(ProjectDir)..\interop\*.dll">
+      <BuildAction>None</BuildAction>
+      <PackagePath>lib\net6.0\</PackagePath>
+    </_PackageFiles>
+  </ItemGroup>
+
+</Project>

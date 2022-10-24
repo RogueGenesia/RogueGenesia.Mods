@@ -1,28 +1,36 @@
 name: Nightly Builds
 on:
   schedule:
-    - cron: '0 */4 * * *' # run every 4 hours, on the hour.
+    - cron: '0 0 * * *' # daily, at midnight UTC
+  workflow_dispatch: { }
 jobs:
   build:
-    runs-on: windows-latest
-    defaults:
-      run:
-        shell: bash
-        environment:
-          app_id: 2067920
-          extra_steamcmd_args: 
+    runs-on: ubuntu-latest
     steps:
       - name: Check out repository  
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Download BepInEx 6.0-win-x64-660
-        run: curl "https://builds.bepinex.dev/projects/bepinex_be/660/BepInEx-Unity.IL2CPP-win-x64-6.0.0-be.660%2B40bf261.zip" --output bepinex.zip -UseBasicParsing
-        workdir: work
-      - name: Setup steamcmd
-        uses: CyberAndrii/setup-steamcmd@v1
-      - name: "Download Rogue: Genesia"
-        run: steamcmd +force_install_dir ./game +login "${{secrets.STEAMCMD_USER_NAME}}" "${{secrets.STEAMCMD_USER_PASSWORD}}" +app_update 2067920 validate -beta beta +quit
-        workdir: work
+      - name: "Install .NET 6"
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
       - name: "Generate interop assemblies"
-        run: ./generate_game_assemblies.sh
+        uses: addnab/docker-run-action@v3
+        with:
+          image: docker.io/ubuntu:22.04
+          options: -t -v ${{ github.workspace }}:/workspace -e STEAMCMD_USER_NAME=${{secrets.STEAMCMD_USER_NAME}} -e STEAMCMD_USER_PASSWORD=${{secrets.STEAMCMD_USER_PASSWORD}}
+          run: |
+            cd /workspace
+            ./generate_game_assemblies.sh
+      - name: "Create and upload package"
+        if: github.ref == 'refs/heads/main'
+        run: |
+          dotnet pack -c Release --nologo -o work/ RogueGenesia.Mod
+          dotnet nuget push work/RogueGenesia.Mod.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+          mv work/RogueGenesia.Mod.*.nupkg work/latest.nupkg
+      - uses: actions/upload-artifact@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          name: latest.nupkg
+          path: work/latest.nupkg
