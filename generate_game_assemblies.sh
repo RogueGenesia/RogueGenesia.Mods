@@ -12,7 +12,7 @@ export WINEDLLOVERRIDES="mscoree,winhttp=n,b;mshtml="
 
 echo "Installing steam game 2067920 - Rouge Genesia"
 steamcmd +quit
-steamcmd +@sSteamCmdForcePlatformType windows +force_install_dir /workspace/work/game +login $STEAMCMD_USER_NAME $STEAMCMD_USER_PASSWORD +app_update "2067920 -beta beta validate" +quit
+steamcmd +@sSteamCmdForcePlatformType windows +force_install_dir /workspace/work/game +login $STEAMCMD_USER_NAME $STEAMCMD_USER_PASSWORD +app_update "2067920 -beta 0.8beta -betapassword BackUpYourDamnSaves validate" +quit
 ls /workspace/work/game
 echo "Game installed. Unpacking BepInEx into game folder"
 unzip work/bepinex.zip -d /workspace/work/game/
