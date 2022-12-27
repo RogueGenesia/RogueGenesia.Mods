@@ -18,6 +18,7 @@ wget https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetric
 
 apt-get install -y --no-install-recommends ca-certificates gnupg cabextract unzip
 apt-get install -y --install-recommends xvfb winehq-staging lib32gcc-s1 steamcmd
+apt-get install -y --install-recommends winehq-staging=7.22~jammy-1
 ln -s /usr/games/steamcmd /usr/bin/steamcmd
 mkdir -p /workspace/work/game
 chmod 777 /workspace/work
