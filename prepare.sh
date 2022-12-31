@@ -19,7 +19,7 @@ wget https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/main/binary-amd64/wine
 dpkg -i wine-*.deb
 # prevent this from upgrading during later steps.
 apt-mark hold winehq-staging
-apt-get -f install --install-recommends
+apt-get -f install --install-recommends -y
 apt-get install -y --no-install-recommends ca-certificates gnupg cabextract unzip
 apt-get install -y --install-recommends xvfb lib32gcc-s1 steamcmd
 
