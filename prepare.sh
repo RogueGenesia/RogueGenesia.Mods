@@ -15,9 +15,9 @@ wget -nc https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sourc
 mv winehq-jammy.sources /etc/apt/sources.list.d/
 apt-get update -y
 wget https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks; mv winetricks /usr/local/bin; chmod +x /usr/local/bin/winetricks
-apt-get install -y --install-recommends winehq-unstable=7.22-jammy-1
+apt-get install -y --install-recommends winehq-staging=7.22-jammy-1
 # prevent this from upgrading during later steps.
-apt-mark hold winehq-unstable
+apt-mark hold winehq-staging
 apt-get install -y --no-install-recommends ca-certificates gnupg cabextract unzip
 apt-get install -y --install-recommends xvfb lib32gcc-s1 steamcmd
 
