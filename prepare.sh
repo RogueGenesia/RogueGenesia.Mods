@@ -15,7 +15,8 @@ wget -nc https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sourc
 mv winehq-jammy.sources /etc/apt/sources.list.d/
 apt-get update -y
 apt-get install -y --no-install-recommends ca-certificates gnupg cabextract unzip
-apt-get install -y --install-recommends xvfb lib32gcc-s1 steamcmd winehq-staging=7.22~jammy-1 wine-staging=7.22~jammy-1
+apt-get install -y --install-recommends xvfb lib32gcc-s1 steamcmd winehq-staging=7.22~jammy-1 \
+                                        wine-staging=7.22~jammy-1 wine-staging-i386=7.22~jammy-1 wine-staging-amd64=7.22~jammy-1 
 
 ln -s /usr/games/steamcmd /usr/bin/steamcmd
 mkdir -p /workspace/work/game
