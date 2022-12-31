@@ -14,14 +14,9 @@ rm -f winehq.key
 wget -nc https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources
 mv winehq-jammy.sources /etc/apt/sources.list.d/
 apt-get update -y
-wget https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks; mv winetricks /usr/local/bin; chmod +x /usr/local/bin/winetricks
-wget https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/main/binary-amd64/wine-staging_7.22~jammy-1_amd64.deb 
-dpkg -i wine-*.deb
-# prevent this from upgrading during later steps.
-apt-mark hold winehq-staging
-apt-get -f install --install-recommends -y
 apt-get install -y --no-install-recommends ca-certificates gnupg cabextract unzip
 apt-get install -y --install-recommends xvfb lib32gcc-s1 steamcmd
+apt-get install -y --install-recommends winehq-staging=7.22~jammy-1
 
 ln -s /usr/games/steamcmd /usr/bin/steamcmd
 mkdir -p /workspace/work/game
